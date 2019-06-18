@@ -66,7 +66,7 @@ class PieDataExtract : DataExtract {
       
         if config["valueLinePart2Length"].float != nil {
             let valueConfig = CGFloat(config["valueLinePart2Length"].float!)
-            pieDataSet.valueLinePart1Length = valueConfig
+            pieDataSet.valueLinePart2Length = valueConfig
         }
       
         if config["valueLineColor"].string != nil {
@@ -84,29 +84,9 @@ class PieDataExtract : DataExtract {
         if config["selectionShift"].float != nil {
             pieDataSet.selectionShift = CGFloat(config["selectionShift"].floatValue)
         }
-        
-        if config["xValuePosition"].string != nil {
-            pieDataSet.xValuePosition = BridgeUtils.parsePieChartDataSetValuePosition(config["xValuePosition"].stringValue)
-        }
       
         if config["yValuePosition"].string != nil {
             pieDataSet.yValuePosition = BridgeUtils.parsePieChartDataSetValuePosition(config["yValuePosition"].stringValue)
-        }
-        
-        if config["valueLinePart1Length"].float != nil {
-            pieDataSet.valueLinePart1Length = CGFloat(config["valueLinePart1Length"].floatValue)
-        }
-        
-        if config["valueLinePart2Length"].float != nil {
-            pieDataSet.valueLinePart2Length = CGFloat(config["valueLinePart2Length"].floatValue)
-        }
-        
-        if config["valueLineColor"].int != nil {
-            pieDataSet.valueLineColor = RCTConvert.uiColor(config["valueLineColor"].intValue);
-        }
-
-        if config["valueLineWidth"].float != nil {
-            pieDataSet.valueLineWidth = CGFloat(config["valueLineWidth"].floatValue)
         }
         
         if config["valueLinePart1OffsetPercentage"].float != nil {
