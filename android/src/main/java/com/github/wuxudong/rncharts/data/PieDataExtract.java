@@ -1,5 +1,7 @@
 package com.github.wuxudong.rncharts.data;
 
+import android.graphics.Color;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
@@ -35,6 +37,19 @@ public class PieDataExtract extends DataExtract<PieData, PieEntry> {
 
         ChartDataSetConfigUtils.commonConfig(chart, pieDataSet, config);
 
+        if (BridgeUtils.validate(config, ReadableType.Boolean, "xValuePosition")) {
+            Boolean isDrawOutSide = config.getBoolean("xValuePosition");
+            if (isDrawOutSide == true) {
+                pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+            } else {
+                pieDataSet.setXValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
+            }
+        }
+        if (BridgeUtils.validate(config, ReadableType.String, "valueLineColor")) {
+            String hex = config.getString("valueLineColor");
+            pieDataSet.setValueLineColor(Color.parseColor(hex));
+        }
+
         // PieDataSet only config
         if (BridgeUtils.validate(config, ReadableType.Number, "sliceSpace")) {
             pieDataSet.setSliceSpace((float) config.getDouble("sliceSpace"));
@@ -43,9 +58,6 @@ public class PieDataExtract extends DataExtract<PieData, PieEntry> {
             pieDataSet.setSelectionShift((float) config.getDouble("selectionShift"));
         }
 
-        if (BridgeUtils.validate(config, ReadableType.String, "xValuePosition")) {
-            pieDataSet.setXValuePosition(PieDataSet.ValuePosition.valueOf(config.getString("xValuePosition").toUpperCase(Locale.ENGLISH)));
-        }
         if (BridgeUtils.validate(config, ReadableType.String, "yValuePosition")) {
             pieDataSet.setYValuePosition(PieDataSet.ValuePosition.valueOf(config.getString("yValuePosition").toUpperCase(Locale.ENGLISH)));
         }
@@ -56,10 +68,6 @@ public class PieDataExtract extends DataExtract<PieData, PieEntry> {
 
         if (BridgeUtils.validate(config, ReadableType.Number, "valueLinePart2Length")) {
             pieDataSet.setValueLinePart2Length((float) config.getDouble("valueLinePart2Length"));
-        }
-
-        if (BridgeUtils.validate(config, ReadableType.Number, "valueLineColor")) {
-            pieDataSet.setValueLineColor(config.getInt("valueLineColor"));
         }
 
         if (BridgeUtils.validate(config, ReadableType.Number, "valueLineWidth")) {
