@@ -47,44 +47,12 @@ class RNPieChartView: RNChartViewBase {
         chart.centerText = text
     }
 
-    func setStyledCenterText(_ data: NSDictionary) {
-        let json = BridgeUtils.toJson(data)
+    func setDrawEntryLabels(_ enabled: Bool) {
+        chart.drawEntryLabelsEnabled = enabled
+    }
 
-        var attrString: NSMutableAttributedString?
-        if json["text"].string == nil
-        {
-            attrString = nil
-        }
-        else
-        {
-            #if os(OSX)
-                let paragraphStyle = NSParagraphStyle.default().mutableCopy() as! NSMutableParagraphStyle
-            #else
-                let paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
-            #endif
-            paragraphStyle.lineBreakMode = NSLineBreakMode.byTruncatingTail
-            paragraphStyle.alignment = .center
-
-
-            var color : NSUIColor?
-            if json["color"].int != nil {
-                color = RCTConvert.uiColor(json["color"].intValue)
-            } else {
-                color = UIColor.black
-            }
-
-            let fontSize = json["size"].float != nil ? CGFloat(json["size"].floatValue) : CGFloat(12)
-
-            attrString = NSMutableAttributedString(string: json["text"].stringValue)
-            attrString?.setAttributes([
-                NSAttributedString.Key.foregroundColor: color!,
-                NSAttributedString.Key.font: NSUIFont.systemFont(ofSize: fontSize),
-                NSAttributedString.Key.paragraphStyle: paragraphStyle
-                ], range: NSMakeRange(0, attrString!.length))
-        }
-
-        chart.centerAttributedText = attrString
-
+    func setExtraOffsets(_ offSets: [Float]) {
+      chart.setExtraOffsets(left: CGFloat(offSets[0]), top: CGFloat(offSets[1]), right: CGFloat(offSets[2]), bottom: CGFloat(offSets[3]))
     }
 
     func setCenterTextRadiusPercent(_ radiusPercent: NSNumber) {
@@ -126,16 +94,8 @@ class RNPieChartView: RNChartViewBase {
         chart.maxAngle = CGFloat(truncating: maxAngle)
     }
 
-    func setMinOffset(_ minOffset: NSNumber) {
-        chart.minOffset = CGFloat(truncating: minOffset)
-    }
-
     func setRotationEnabled(_ enabled: Bool) {
         chart.rotationEnabled = enabled
-    }
-
-    func setRotationAngle(_ angle: NSNumber) {
-        chart.rotationAngle = CGFloat(truncating: angle)
     }
 
     override func didSetProps(_ changedProps: [String]!) {
