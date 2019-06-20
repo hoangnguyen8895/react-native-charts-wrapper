@@ -9,6 +9,8 @@ import com.github.wuxudong.rncharts.listener.RNOnChartValueSelectedListener;
 import com.facebook.react.bridge.ReadableArray;
 import com.github.mikephil.charting.charts.PieChart;
 
+import com.facebook.react.uimanager.annotations.ReactProp;
+
 public class HorizontalBarChartManager extends BarChartManager {
 
     @Override
