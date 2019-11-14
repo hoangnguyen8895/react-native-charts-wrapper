@@ -15,6 +15,7 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.utils.MPPointD;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.github.wuxudong.rncharts.charts.ChartGroupHolder;
+import com.github.mikephil.charting.highlight.Highlight;
 
 import java.lang.ref.WeakReference;
 
@@ -51,6 +52,12 @@ public class RNOnChartGestureListener implements OnChartGestureListener {
 
     @Override
     public void onChartLongPressed(MotionEvent me) {
+        sendEvent("longPressed", me);
+        
+        Chart chart = mWeakChart.get();
+        Highlight h = chart.getHighlightByTouchPoint(me.getX(), me.getY());
+
+        chart.highlightValue(h, true);
     }
 
     @Override
