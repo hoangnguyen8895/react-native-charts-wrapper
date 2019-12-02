@@ -7,6 +7,11 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.Arguments;
+
 import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.YAxis;
@@ -19,6 +24,7 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 import com.github.wuxudong.rncharts.listener.RNOnChartGestureListener;
 import com.github.wuxudong.rncharts.utils.BridgeUtils;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -287,7 +293,8 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
                 "moveViewToAnimated", MOVE_VIEW_TO_ANIMATED,
                 "fitScreen", FIT_SCREEN,
                 "highlights", HIGHLIGHTS,
-                "setDataAndLockIndex", SET_DATA_AND_LOCK_INDEX);
+                "setDataAndLockIndex", SET_DATA_AND_LOCK_INDEX,
+                "getOffset", GET_OFFSET);
 
         if (commandsMap != null) {
             map.putAll(commandsMap);
@@ -329,9 +336,37 @@ public abstract class BarLineChartBaseManager<T extends BarLineChartBase, U exte
             case SET_DATA_AND_LOCK_INDEX:
                 setDataAndLockIndex(root, args.getMap(0));
                 return;
+
+            case GET_OFFSET:
+                getOffset(root);
+                return;
+                
         }
 
         super.receiveCommand(root, commandId, args);
+    }
+
+    private void getOffset(T root){
+        ViewPortHandler mViewPortHandler = root.getViewPortHandler();
+        float left = mViewPortHandler.offsetLeft();
+        float right = mViewPortHandler.offsetRight();
+        float top = mViewPortHandler.offsetTop();
+        float bottom = mViewPortHandler.offsetBottom();
+
+        // onChangeOffset
+        WritableMap event = Arguments.createMap();
+        String data = "{"
+        + "\"top\" : " + String.valueOf(top) + ','
+        + "\"left\" : " + String.valueOf(left) + ','
+        + "\"bottom\" : " + String.valueOf(bottom) + ','
+        + "\"right\" : " + String.valueOf(right)
+        + "}";
+        event.putString("message", data);
+        ReactContext reactContext = (ReactContext) root.getContext();
+        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                root.getId(),
+                "topChangeOffset",
+                event);
     }
 
     private void setDataAndLockIndex(T root, ReadableMap map) {

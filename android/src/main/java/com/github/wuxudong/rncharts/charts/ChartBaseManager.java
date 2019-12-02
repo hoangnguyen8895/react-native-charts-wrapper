@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.common.MapBuilder;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends SimpleViewManager<T> {
 
@@ -45,6 +47,7 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
     protected static final int HIGHLIGHTS = 8;
 
     protected static final int SET_DATA_AND_LOCK_INDEX = 9;
+    protected static final int GET_OFFSET = 10;
 
     abstract DataExtract getDataExtract();
 
@@ -512,6 +515,42 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
         chart.notifyDataSetChanged();
         onAfterDataSetChanged(chart);
         chart.postInvalidate();;
+    }
+
+    @Override
+    public Map getExportedCustomBubblingEventTypeConstants() {
+        return MapBuilder.builder()
+            .put(
+                "topChange",
+                MapBuilder.of(
+                    "phasedRegistrationNames",
+                    MapBuilder.of(
+                        "bubbled",
+                        "onChange"
+                    )
+                )
+            )
+            .put(
+                "topSelect",
+                MapBuilder.of(
+                    "phasedRegistrationNames",
+                    MapBuilder.of(
+                        "bubbled",
+                        "onSelect"
+                    )
+                )
+            )
+            .put(
+                "topChangeOffset",
+                MapBuilder.of(
+                    "phasedRegistrationNames",
+                    MapBuilder.of(
+                        "bubbled",
+                        "onChangeOffset"
+                    )
+                )
+            )
+            .build();
     }
 
 }
