@@ -2,22 +2,18 @@ package com.github.wuxudong.rncharts.utils;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
-import com.facebook.react.views.text.ReactFontManager;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarLineScatterCandleBubbleDataSet;
 import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.LineRadarDataSet;
 import com.github.mikephil.charting.data.LineScatterCandleRadarDataSet;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.wuxudong.rncharts.charts.CustomFormatter;
 import com.github.wuxudong.rncharts.charts.DateFormatter;
 import com.github.wuxudong.rncharts.charts.IndexValueFormatter;
 
-import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -121,42 +117,15 @@ public class ChartDataSetConfigUtils {
     public static void commonLineRadarConfig(LineRadarDataSet dataSet, ReadableMap config) {
 
         if (BridgeUtils.validate(config, ReadableType.Map, "fillGradient")) {
+
             int[] colors = BridgeUtils.convertToIntArray(config.getMap("fillGradient").getArray("colors"));
+            float[] positions = BridgeUtils.convertToFloatArray(config.getMap("fillGradient").getArray("positions"));
 
-            GradientDrawable.Orientation orientation = GradientDrawable.Orientation.BOTTOM_TOP;
+            String orientation = config.getMap("fillGradient").getString("orientation");
 
-            switch (config.getMap("fillGradient").getString("orientation")) {
-                case "TOP_BOTTOM":
-                    orientation = GradientDrawable.Orientation.TOP_BOTTOM;
-                    break;
-                case "TR_BL":
-                    orientation = GradientDrawable.Orientation.TR_BL;
-                    break;
-                case "RIGHT_LEFT":
-                    orientation = GradientDrawable.Orientation.RIGHT_LEFT;
-                    break;
-                case "BR_TL":
-                    orientation = GradientDrawable.Orientation.BR_TL;
-                    break;
-                case "BOTTOM_TOP":
-                    orientation = GradientDrawable.Orientation.BOTTOM_TOP;
-                    break;
-                case "BL_TR":
-                    orientation = GradientDrawable.Orientation.BL_TR;
-                    break;
-                case "LEFT_RIGHT":
-                    orientation = GradientDrawable.Orientation.LEFT_RIGHT;
-                    break;
-                case "TL_BR":
-                    orientation = GradientDrawable.Orientation.TL_BR;
-                    break;
-            }
-
-            GradientDrawable gd = new GradientDrawable(
-                    orientation,
-                    colors);
-            gd.setCornerRadius(0f);
+            GradientDrawableCustom gd = new GradientDrawableCustom(orientation, colors, positions);
             gd.setAlpha(config.getInt("fillAlpha"));
+
             dataSet.setFillDrawable(gd);
         } else if (BridgeUtils.validate(config, ReadableType.Number, "fillColor")) {
             dataSet.setFillColor(config.getInt("fillColor"));
