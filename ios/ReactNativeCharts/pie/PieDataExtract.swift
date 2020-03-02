@@ -11,7 +11,7 @@ import UIKit
 
 extension UIColor {
   convenience init?(hexString: String) {
-    var chars = Array(hexString.hasPrefix("#") ? hexString.characters.dropFirst() : hexString.characters)  // Swift 4 just use `var chars = Array(hexString.hasPrefix("#") ? hexString.dropFirst() : hexString[...])`
+    var chars = Array(hexString.hasPrefix("#") ? hexString.dropFirst() : hexString[...])  // Swift 4 just use `var chars = Array(hexString.hasPrefix("#") ? hexString.dropFirst() : hexString[...])`
     let red, green, blue, alpha: CGFloat
     switch chars.count {
     case 3:

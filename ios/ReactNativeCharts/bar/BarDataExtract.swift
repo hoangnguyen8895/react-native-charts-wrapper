@@ -8,11 +8,11 @@ import SwiftyJSON
 import Charts
 
 class BarDataExtract : DataExtract {
-    override open func createData() -> ChartData {
+    override public func createData() -> ChartData {
         return BarChartData();
     }
     
-    override open func dataConfig(_ data: ChartData, config: JSON) {
+    override public func dataConfig(_ data: ChartData, config: JSON) {
     
         let barData = data as! BarChartData
       
@@ -31,11 +31,11 @@ class BarDataExtract : DataExtract {
        
     }
     
-    override open func createDataSet(_ entries: [ChartDataEntry]?, label: String?) -> IChartDataSet {
+    override public func createDataSet(_ entries: [ChartDataEntry]?, label: String?) -> IChartDataSet {
         return BarChartDataSet(entries: entries, label: label)
     }
     
-    override open func dataSetConfig(_ dataSet: IChartDataSet, config: JSON) {
+    override public func dataSetConfig(_ dataSet: IChartDataSet, config: JSON) {
         let barDataSet = dataSet as! BarChartDataSet
         
         ChartDataSetConfigUtils.commonConfig(barDataSet, config: config);

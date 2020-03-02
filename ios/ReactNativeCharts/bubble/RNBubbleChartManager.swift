@@ -9,12 +9,12 @@ import UIKit
 open class RNBubbleChartManager: RCTViewManager, RNBarLineChartBaseManager {
   var _bridge: RCTBridge? {get{return self.bridge}}
   
-  override open func view() -> UIView! {
+  override public func view() -> UIView! {
     let ins = RNBubbleChartView()
     return ins;
   }
 
-  override open static func requiresMainQueueSetup() -> Bool {
+  override public static func requiresMainQueueSetup() -> Bool {
     return true;
   }
 

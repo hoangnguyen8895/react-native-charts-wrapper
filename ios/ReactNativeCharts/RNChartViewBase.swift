@@ -26,7 +26,7 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
     
     private  var syncY = false
     
-    override open func reactSetFrame(_ frame: CGRect)
+    override public func reactSetFrame(_ frame: CGRect)
     {
         super.reactSetFrame(frame);
         
@@ -543,7 +543,7 @@ open class RNChartViewBase: UIView, ChartViewDelegate {
     func onAfterDataSetChanged() {
     }
     
-    override open func didSetProps(_ changedProps: [String]!) {
+    override public func didSetProps(_ changedProps: [String]!) {
         super.didSetProps(changedProps)        
         chart.notifyDataSetChanged()
         onAfterDataSetChanged()
